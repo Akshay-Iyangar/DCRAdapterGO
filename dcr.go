@@ -1,7 +1,6 @@
 package main
 
 import (
-    "fmt"
     "io/ioutil"
     "net/http"
     "time"
@@ -32,12 +31,7 @@ func main() {
         panic(err)
      	}
     	raw_message := string(body)
-    	//fmt.Println(raw_message)
-
-      httpMessage := HTTPMessage{
-				Message:  body,
-				Time:     m.Time.Format(time.RFC3339),
-			}
+    	fmt.Println(raw_message)
 
       message, err := json.Marshal(httpMessage)
 			if err != nil {
@@ -67,10 +61,4 @@ func main() {
       debug("response Headers:", response.Header)
 
     }
-}
-
-
-type HTTPMessage struct {
-	Message  string `json:"message"`
-	Time     string `json:"time"`
 }
