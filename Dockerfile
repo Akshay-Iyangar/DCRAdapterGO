@@ -1,6 +1,8 @@
-FROM gliderlabs/logspout:latest
-
-
+FROM kiasaki/alpine-golang
+WORKDIR /gopath/src/app
+ADD . /gopath/src/app/
+RUN go get app
+ENTRYPOINT ["/gopath/bin/app"]
 # Install base packages
 RUN apk update && apk upgrade && \
     apk-install curl wget bash tree && \
