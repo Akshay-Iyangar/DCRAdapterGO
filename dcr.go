@@ -31,8 +31,19 @@ func main() {
      		debug(" The response body from fullfillment log failed!!!")
         panic(err)
      	}
-    	message := string(body)
-    	fmt.Println(message)
+    	raw_message := string(body)
+    	//fmt.Println(raw_message)
+
+      httpMessage := HTTPMessage{
+				Message:  body,
+				Time:     m.Time.Format(time.RFC3339),
+			}
+
+      message, err := json.Marshal(httpMessage)
+			if err != nil {
+				debug("flushHttp - Error encoding JSON: ", err)
+			}
+      debug("The JSON encoded message that would be sent to the DCR: ",message)
       debug("Tick at", time)
       //This should not be hard-coded and this should be taken from the script.
       url := os.Args[1]
@@ -40,7 +51,7 @@ func main() {
       debug("URL:>", url)
 
       //var jsonStr = []byte(`{"title":"Buy cheese and bread for breakfast."}`)
-      req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+      req, err := http.NewRequest("POST", url, bytes.NewBuffer(message))
       req.Header.Set("X-Custom-Header", "Dashboard")
       req.Header.Set("Content-Type", "application/json")
 
@@ -56,4 +67,10 @@ func main() {
       debug("response Headers:", response.Header)
 
     }
+}
+
+
+type HTTPMessage struct {
+	Message  string `json:"message"`
+	Time     string `json:"time"`
 }
