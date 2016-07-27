@@ -7,6 +7,7 @@ import (
     "bytes"
     "log"
     "os"
+    "fmt"
 )
 
 func debug(v ...interface{}) {
@@ -33,7 +34,6 @@ func main() {
     	raw_message := string(body)
     	fmt.Println(raw_message)
 
-      message, err := json.Marshal(httpMessage)
 			if err != nil {
 				debug("flushHttp - Error encoding JSON: ", err)
 			}
@@ -45,7 +45,7 @@ func main() {
       debug("URL:>", url)
 
       //var jsonStr = []byte(`{"title":"Buy cheese and bread for breakfast."}`)
-      req, err := http.NewRequest("POST", url, bytes.NewBuffer(message))
+      req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
       req.Header.Set("X-Custom-Header", "Dashboard")
       req.Header.Set("Content-Type", "application/json")
 
