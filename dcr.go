@@ -37,7 +37,7 @@ func main() {
 			if err != nil {
 				debug("flushHttp - Error encoding JSON: ", err)
 			}
-      debug("The JSON encoded message that would be sent to the DCR: ",message)
+      //debug("The JSON encoded message that would be sent to the DCR: ",message)
       debug("Tick at", time)
       //This should not be hard-coded and this should be taken from the script.
       url := os.Args[1]

@@ -7,7 +7,4 @@ HOST_IP=$(curl http://rancher-metadata/2015-12-19/self/host/agent_ip)
 
 url=$(echo "http://$HOST_IP:12285?http.path=/v1/dc/logs/ecomm/logs\&http.buffer.capacity=9999")
 
-/bin/logspout $url
-
-
-
+/gopath/bin/app $url
