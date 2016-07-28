@@ -20,7 +20,7 @@ func main() {
 
     ticker := time.NewTicker(time.Millisecond * 30000)
     for time := range ticker.C {
-      resp, err := http.Get("http://dashboard.ecom.int.godaddy.com/fulfillment")
+      resp, err := http.Get("http://dashboard.ecom.int.godaddy.com/fulfillmentLog")
       if err != nil {
           debug("Could not request Fulfillment Log")
           panic(err)
