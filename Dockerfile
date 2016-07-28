@@ -1,19 +1,20 @@
-FROM alpine:3.4
+FROM artifactory.secureserver.net:10000/jdk:8u74
+MAINTAINER John Rudolf Lewis <JohnRLewis@godaddy.com>
 
-RUN apk update && apk add curl git mercurial bzr 'go=1.5.3-r0' && rm -rf /var/cache/apk/*
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    ca-certificates \
+    curl \
+    mercurial \
+    git-core
+RUN curl -s https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz | tar -v -C /usr/local -xz
 
-ENV GOROOT /usr/lib/go
-ENV GOPATH /gopath
-ENV GOBIN /gopath/bin
-ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+ENV GOPATH /go
+ENV GOROOT /usr/local/go
+ENV PATH /usr/local/go/bin:/go/bin:/usr/local/bin:$PATH
 
-
-WORKDIR /gopath/src/app
-ADD . /gopath/src/app/
+WORKDIR /go/src/app
+ADD . /go/src/app/
 RUN go get app
-ENTRYPOINT ["/gopath/bin/app"]
+ENTRYPOINT ["/go/bin/app"]
 
-# Define bash as default command
-EXPOSE 12285
-
-COPY hostname.sh /etc/my_init.d/hostname.sh
+CMD ["bash"]
