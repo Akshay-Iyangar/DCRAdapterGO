@@ -12,7 +12,7 @@ ENV GOPATH /go
 ENV GOROOT /usr/local/go
 ENV PATH /usr/local/go/bin:/go/bin:/usr/local/bin:$PATH
 
-WORKDIR /go/src/app
-ADD . /go/src/app/
-RUN go build app
-ENTRYPOINT ["/go/src/app"]
+RUN mkdir /go/src/DCRadapter
+RUN go build dcr.go
+COPY  dcr /go/src/DCRadapter/
+COPY  hostname.sh /go/src/DCRadapter/hostname.sh

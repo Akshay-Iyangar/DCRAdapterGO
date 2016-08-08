@@ -8,4 +8,4 @@ RESTurl="dashboard.ecom.int.godaddy.com/"
 
 DCRurl=$(echo "http://$HOST_IP:12285/v1/dc/logs/ecomm/logs")
 
-/go/src/app  $RESTurl $DCRurl
+/go/src/DCRadapter/dcr $RESTurl $DCRurl
