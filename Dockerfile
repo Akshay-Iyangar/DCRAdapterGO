@@ -14,7 +14,5 @@ ENV PATH /usr/local/go/bin:/go/bin:/usr/local/bin:$PATH
 
 WORKDIR /go/src/app
 ADD . /go/src/app/
-RUN go get app
-ENTRYPOINT ["/go/bin/app"]
-
-CMD ["bash"]
+RUN go build app
+ENTRYPOINT ["/go/src/app"]
