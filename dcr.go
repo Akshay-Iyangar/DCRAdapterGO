@@ -32,131 +32,95 @@ func main() {
   var previousGET_Ctime string = previous_time.Format("2006-01-02 15:04:05.000")
   var previousGET_Stime string = previous_time.Format("2006-01-02 15:04:05.000")
   var previousGET_CEtime string = previous_time.Format("2006-01-02 15:04:05.000")
-  loc, _ := time.LoadLocation("US/Pacific")
+
 
 for{
 
     /*aladin logic will be all togther different */
+    //All this can be also be ridden if i have a mechanism to store the time and the endpoint.
+    //i.e i will only need 2 if condition. this is something i need to think abut. May be Redis
+    //This will also prevent me to worry about having only one Docker container.
+    //I can have more than one Docker container in that case.
 
     if previousGET_Ftime == "0001-01-01 00:00:00.000" {
-      previousGET_Ftime = DCRAdapterFulfillment("fulfillmentLog",previousGET_Ftime)
-      previous_Ftime,_ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Ftime, loc)
+      previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
+      fmt.Println(previous_Ftime)
+      previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
+      fmt.Println(previousGET_Ftime)
+
       time.Sleep(30000 * time.Millisecond)
     }
+
+    //fmt.Println(time.Since(previous_Ftime).Minutes())
     if time.Since(previous_Ftime).Minutes()>= 5{
-      previousGET_Ftime = DCRAdapterFulfillment("fulfillmentLog",previousGET_Ftime)
-      previous_Ftime,_ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Ftime, loc)
+      previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
+      previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
     }
     if previousGET_CEtime == "0001-01-01 00:00:00.000" {
-      previousGET_CEtime = DCRAdapterCommError("commerrorLog",previousGET_CEtime)
-      previous_CEtime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_CEtime, loc)
+      previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
+      fmt.Println(previous_CEtime)
+      previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_CEtime).Minutes()>= 5{
-      previousGET_CEtime = DCRAdapterCommError("commerrorLog",previousGET_CEtime)
-      previous_CEtime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_CEtime, loc)
+      previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
+      previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
     }
     if previousGET_Stime == "0001-01-01 00:00:00.000" {
-      previousGET_Stime = DCRAdapterSiteError("siteerrorLog",previousGET_Stime)
-      previous_Stime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Stime, loc)
+      previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
+      fmt.Println(previous_Stime)
+      previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_Stime).Minutes()>= 5{
-      previousGET_Stime = DCRAdapterSiteError("siteerrorLog",previousGET_Stime)
-      previous_Stime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Stime, loc)
+      previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
+      previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
     }
-
     if previousGET_Mtime == "0001-01-01 00:00:00.000" {
-      previousGET_Mtime = DCRAdapterMSMQ("msmqLog",previousGET_Mtime)
-      previous_Mtime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Mtime, loc)
+      previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
+      previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_Mtime).Minutes()>= 5{
-      previousGET_Mtime = DCRAdapterMSMQ("msmqLog",previousGET_Mtime)
-      previous_Mtime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Mtime, loc)
+      previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
+      previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
     }
-
     if previousGET_Ctime == "0001-01-01 00:00:00.000"{
-      previousGET_Ctime = DCRAdapterCommonpurchase("commonpurchaseLog",previousGET_Ctime)
-      previous_Ctime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Ctime, loc)
+      previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
+      previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if  time.Since(previous_Ctime).Minutes()>= 5{
-      previousGET_Ctime = DCRAdapterCommonpurchase("commonpurchaseLog",previousGET_Ctime)
-      previous_Ctime, _ = time.ParseInLocation("2006-01-02 15:04:05.000", previousGET_Ctime, loc)
+      previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
+      previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
     }
+    /*
+    temp := (5 - time.Since(previous_Ftime).Minutes()) * 60
+    fmt.Println(temp)
+    fmt.Println(time.Duration(temp) * time.Second)
+    time.Sleep(time.Duration(temp) * time.Second)*/
+    time.Sleep(30000 * time.Millisecond)
+    //x:= previous_Ftime.Add(-time.Since(previous_Ftime).Minutes() * time.Minute)
+    //var duration_Seconds time.Duration = 300 * time.Second
+    //var duration1_Seconds time.Duration = time.Since(previous_Ftime)
+    // := duration_Seconds - time.Since(previous_Ftime)
 
-    time.Sleep(120000 * time.Millisecond) // write it in minutes
-
+    //fmt.Println(x)
+    //time.Sleep(x * time.Minute) // write it in minutes*/
   }
 }
-//func <<function_name>>(input type) return type {}
-func DCRAdapterFulfillment(endpoint string,previousGET_Ftime string) (string){
-  currentGET_Ftime,previousGET_Ftime := FulfillmentLogTimer(previousGET_Ftime)
-  body := DashboardGET(endpoint,currentGET_Ftime,previousGET_Ftime) // This is common for everything
-  previousGET_Ftime = currentGET_Ftime
-  fmt.Println(previousGET_Ftime)
+func DCRAdapter(endpoint string,previousGET_time string) (time.Time){
+  current,previousGET_time := LogTimer(previousGET_time) //everything has to be a string
+  currentGET_time := current.Format("2006-01-02 15:04:05.000")
+  body := DashboardGET(endpoint,currentGET_time,previousGET_time)
+  //previousGET_time = currentGET_time
   DCRPost(body)
-  return previousGET_Ftime
-      //time.Sleep(30000 * time.Millisecond)
+  return current   //this has to be time
 }
-func DCRAdapterMSMQ(endpoint string, previousGET_Mtime string)(string){
-  currentGET_Mtime,previousGET_Mtime := MSMQLogTimer(previousGET_Mtime)
-  body := DashboardGET(endpoint,currentGET_Mtime,previousGET_Mtime) // This is common for everything
-  previousGET_Mtime = currentGET_Mtime
-  DCRPost(body)
-  return previousGET_Mtime
-}
-func DCRAdapterCommonpurchase(endpoint string,previousGET_Ctime string)(string){
-  currentGET_Ctime,previousGET_Ctime := CommonPurchaseLogTimer(previousGET_Ctime)
-  body := DashboardGET(endpoint,currentGET_Ctime,previousGET_Ctime) // This is common for everything
-  previousGET_Ctime = currentGET_Ctime
-  DCRPost(body)
-  return previousGET_Ctime
-}
-
-func DCRAdapterCommError(endpoint string,previousGET_CEtime string)(string){
-  currentGET_CEtime,previousGET_CEtime := CommErrorLogTimer(previousGET_CEtime)
-  body := DashboardGET(endpoint,currentGET_CEtime,previousGET_CEtime) // This is common for everything
-  previousGET_CEtime = currentGET_CEtime
-  DCRPost(body)
-  return previousGET_CEtime
-}
-
-func DCRAdapterSiteError(endpoint string,previousGET_Stime string)(string){
-  currentGET_Stime,previousGET_Stime := SiteErrorLogTimer(previousGET_Stime)
-  body := DashboardGET(endpoint,currentGET_Stime,previousGET_Stime) // This is common for everything
-  previousGET_Stime = currentGET_Stime
-  DCRPost(body)
-  return previousGET_Stime
-}
-
-
-//We only need to keep adding this function w.r.t all the endpoints we have.
-
-
-
-/*
-func CommonPurchaseLogTimer(previousGET_time string){
-  fmt.Println("Inside CommonPurchaseLog")
-  //For test the timer is of 19 minutes
-  ticker := time.NewTicker(time.Minute * 19)
-  for timer := range ticker.C {
-    endpoint := "commonpurchaseLog"
-    currentGET_time,previousGET_time := TimeInformation(previousGET_time)
-    body := DashboardGET(endpoint,currentGET_time,previousGET_time) // This is common for everything
-    previousGET_time = currentGET_time
-    DCRPost(body) //This is common for everything
-    debug("Timer for fullfillment Log", timer)
-  }
-}
-*/
-
 
 
 func DashboardGET(endpoint string ,currentGET_time string,previousGET_time string)([]byte){
   host := os.Args[1]
-  //"http://localhost:9179/"
   URL,_ := url.Parse(host)
 	URL.Path = path.Join(URL.Path, endpoint)
   client := &http.Client{}
@@ -177,85 +141,33 @@ func DashboardGET(endpoint string ,currentGET_time string,previousGET_time strin
     debug(" The response body from fullfillment log failed!!!")
     panic(err)
   }
-  //fmt.Println(body)
+  fmt.Println("The current time",endpoint,":",currentGET_time)
+  fmt.Println("The previous time",endpoint,":",previousGET_time)
   return body
 }
 
 
-func FulfillmentLogTimer(previousGET_Ftime string)(string,string){
-  current_time := time.Now()
-  currentGET_Ftime := current_time.Format("2006-01-02 15:04:05.000")
+func LogTimer(previousGET_time string)(time.Time,string){
 
-  if previousGET_Ftime == "0001-01-01 00:00:00.000" {
+  loc, _  := time.LoadLocation("US/Pacific")
+  current_time := time.Now().Format("2006-01-02 15:04:05.000")
+  current,_ := time.ParseInLocation("2006-01-02 15:04:05.000", current_time, loc)
+  //currentGET_time := current.Format("2006-01-02 15:04:05.000")
+
+  if previousGET_time == "0001-01-01 00:00:00.000" {
           //this should be the time we make the thread sleep
-          previous_time := current_time.Add(-5 * time.Minute)
-          previousGET_Ftime = previous_time.Format("2006-01-02 15:04:05.000")
+          previoustime := time.Now().Add(-5 * time.Minute).Format("2006-01-02 15:04:05.000")
+          previous,_ := time.ParseInLocation("2006-01-02 15:04:05.000", previoustime, loc)
+          previousGET_time = previous.Format("2006-01-02 15:04:05.000")
   }
-  fmt.Println("The current time fulfillment:",currentGET_Ftime)
-  fmt.Println("The previous time fulfillment :",previousGET_Ftime)
-  return currentGET_Ftime,previousGET_Ftime
+
+  return current,previousGET_time
 }
-
-func MSMQLogTimer(previousGET_Mtime string)(string,string){
-  current_time := time.Now()
-  currentGET_Mtime := current_time.Format("2006-01-02 15:04:05.000")
-
-  if previousGET_Mtime == "0001-01-01 00:00:00.000" {
-          previous_time := current_time.Add(-5 * time.Minute)
-          previousGET_Mtime = previous_time.Format("2006-01-02 15:04:05.000")
-  }
-  fmt.Println("The current time msmqLog :",currentGET_Mtime)
-  fmt.Println("The previous time msmqLog :",previousGET_Mtime)
-  return currentGET_Mtime,previousGET_Mtime
-}
-
-func CommonPurchaseLogTimer(previousGET_Ctime string)(string,string){
-  current_time := time.Now()
-  currentGET_Ctime := current_time.Format("2006-01-02 15:04:05.000")
-
-  if previousGET_Ctime == "0001-01-01 00:00:00.000" {
-          previous_time := current_time.Add(-5 * time.Minute)
-          previousGET_Ctime = previous_time.Format("2006-01-02 15:04:05.000")
-  }
-  fmt.Println("The current time commonpurchaseLog :",currentGET_Ctime)
-  fmt.Println("The previous time commonpurchaseLog :",previousGET_Ctime)
-  return currentGET_Ctime,previousGET_Ctime
-}
-
-func CommErrorLogTimer(previousGET_CEtime string)(string,string){
-  current_time := time.Now()
-  currentGET_CEtime := current_time.Format("2006-01-02 15:04:05.000")
-
-  if previousGET_CEtime == "0001-01-01 00:00:00.000" {
-          //this should be the time we make the thread sleep
-          previous_time := current_time.Add(-5 * time.Minute)
-          previousGET_CEtime = previous_time.Format("2006-01-02 15:04:05.000")
-  }
-  fmt.Println("The current time commerror:",currentGET_CEtime)
-  fmt.Println("The previous time commerror :",previousGET_CEtime)
-  return currentGET_CEtime,previousGET_CEtime
-}
-
-func SiteErrorLogTimer(previousGET_Stime string)(string,string){
-  current_time := time.Now()
-  currentGET_Stime := current_time.Format("2006-01-02 15:04:05.000")
-
-  if previousGET_Stime == "0001-01-01 00:00:00.000" {
-          //this should be the time we make the thread sleep
-          previous_time := current_time.Add(-5 * time.Minute)
-          previousGET_Stime = previous_time.Format("2006-01-02 15:04:05.000")
-  }
-  fmt.Println("The current time siteerror:",currentGET_Stime)
-  fmt.Println("The previous time siteerror :",previousGET_Stime)
-  return currentGET_Stime,previousGET_Stime
-}
-
 
 func DCRPost(body []byte){
   client := &http.Client{}
   //The DCR endpoint
   url := os.Args[2]
-  //"http://localhost:12285/v1/dc/logs/ecomm/logs"
   debug("URL:>", url)
 
   resp, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
