@@ -43,67 +43,67 @@ for{
     //I can have more than one Docker container in that case.
 
     if previousGET_Ftime == "0001-01-01 00:00:00.000" {
+      fmt.Println("Running fullfillmentLog (first iteration)")
       previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
-      fmt.Println("Inside F1")
-      fmt.Println(previous_Ftime)
       previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
-      fmt.Println(previousGET_Ftime)
-
       time.Sleep(30000 * time.Millisecond)
     }
 
     //fmt.Println(time.Since(previous_Ftime).Minutes())
     if time.Since(previous_Ftime).Minutes()>= 5{
-
-      fmt.Println("Inside F2")
+      fmt.Println("Running fullfillmentLog")
       previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
       previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
     }
     if previousGET_CEtime == "0001-01-01 00:00:00.000" {
+      fmt.Println("Running commonerroLog (first iteration)")
       previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
-      fmt.Println(previous_CEtime)
-      fmt.Println("Inside CE1")
       previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_CEtime).Minutes()>= 5{
+      fmt.Println("Running commonerroLog")
       previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
       previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
-      fmt.Println("Inside CE2")
+
     }
     if previousGET_Stime == "0001-01-01 00:00:00.000" {
+      fmt.Println("Running siteerrorLog (first iteration)")
       previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
-      fmt.Println(previous_Stime)
-      fmt.Println("Inside S1")
       previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_Stime).Minutes()>= 5{
+      fmt.Println("Inside S2")
       previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
       previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
-      fmt.Println("Inside S2")
+
     }
     if previousGET_Mtime == "0001-01-01 00:00:00.000" {
+      fmt.Println("Running msmqLog (first iteration)")
       previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
       previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
-      fmt.Println("Inside M1")
+
     }
     if time.Since(previous_Mtime).Minutes()>= 5{
+      fmt.Println("Running msmqLog")
       previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
       previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
-      fmt.Println("Inside M2")
+
     }
     if previousGET_Ctime == "0001-01-01 00:00:00.000"{
+      fmt.Println("Running commonpurchaseLog (first iteration)")
       previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
       previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
-      fmt.Println("Inside C1")
+
     }
     if  time.Since(previous_Ctime).Minutes()>= 5{
+      fmt.Println("Running commonpurchaseLog")
       previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
       previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
-      fmt.Println("Inside C2")
+
     }
     /*
     temp := (5 - time.Since(previous_Ftime).Minutes()) * 60
