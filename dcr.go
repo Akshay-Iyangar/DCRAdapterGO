@@ -44,6 +44,7 @@ for{
 
     if previousGET_Ftime == "0001-01-01 00:00:00.000" {
       previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
+      fmt.Println("Inside F1")
       fmt.Println(previous_Ftime)
       previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
       fmt.Println(previousGET_Ftime)
@@ -53,53 +54,63 @@ for{
 
     //fmt.Println(time.Since(previous_Ftime).Minutes())
     if time.Since(previous_Ftime).Minutes()>= 5{
+
+      fmt.Println("Inside F2")
       previous_Ftime = DCRAdapter("fulfillmentLog",previousGET_Ftime)
       previousGET_Ftime = previous_Ftime.Format("2006-01-02 15:04:05.000")
     }
     if previousGET_CEtime == "0001-01-01 00:00:00.000" {
       previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
       fmt.Println(previous_CEtime)
+      fmt.Println("Inside CE1")
       previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_CEtime).Minutes()>= 5{
       previous_CEtime = DCRAdapter("commerrorLog",previousGET_CEtime)
       previousGET_CEtime = previous_CEtime.Format("2006-01-02 15:04:05.000")
+      fmt.Println("Inside CE2")
     }
     if previousGET_Stime == "0001-01-01 00:00:00.000" {
       previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
       fmt.Println(previous_Stime)
+      fmt.Println("Inside S1")
       previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_Stime).Minutes()>= 5{
       previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
       previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
+      fmt.Println("Inside S2")
     }
     if previousGET_Mtime == "0001-01-01 00:00:00.000" {
       previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
       previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
+      fmt.Println("Inside M1")
     }
     if time.Since(previous_Mtime).Minutes()>= 5{
       previous_Mtime = DCRAdapter("msmqLog",previousGET_Mtime)
       previousGET_Mtime = previous_Mtime.Format("2006-01-02 15:04:05.000")
+      fmt.Println("Inside M2")
     }
     if previousGET_Ctime == "0001-01-01 00:00:00.000"{
       previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
       previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
       time.Sleep(30000 * time.Millisecond)
+      fmt.Println("Inside C1")
     }
     if  time.Since(previous_Ctime).Minutes()>= 5{
       previous_Ctime = DCRAdapter("commonpurchaseLog",previousGET_Ctime)
       previousGET_Ctime = previous_Ctime.Format("2006-01-02 15:04:05.000")
+      fmt.Println("Inside C2")
     }
     /*
     temp := (5 - time.Since(previous_Ftime).Minutes()) * 60
     fmt.Println(temp)
     fmt.Println(time.Duration(temp) * time.Second)
     time.Sleep(time.Duration(temp) * time.Second)*/
-    time.Sleep(30000 * time.Millisecond)
+    //time.Sleep(30000 * time.Millisecond)
     //x:= previous_Ftime.Add(-time.Since(previous_Ftime).Minutes() * time.Minute)
     //var duration_Seconds time.Duration = 300 * time.Second
     //var duration1_Seconds time.Duration = time.Since(previous_Ftime)
@@ -149,16 +160,22 @@ func DashboardGET(endpoint string ,currentGET_time string,previousGET_time strin
 
 func LogTimer(previousGET_time string)(time.Time,string){
 
+
+
   loc, _  := time.LoadLocation("US/Pacific")
   current_time := time.Now().Format("2006-01-02 15:04:05.000")
-  current,_ := time.ParseInLocation("2006-01-02 15:04:05.000", current_time, loc)
+  ct,_ := time.Parse("2006-01-02 15:04:05.000",current_time)
+  current:= ct.In(loc) // time format
+
+
   //currentGET_time := current.Format("2006-01-02 15:04:05.000")
 
   if previousGET_time == "0001-01-01 00:00:00.000" {
           //this should be the time we make the thread sleep
           previoustime := time.Now().Add(-5 * time.Minute).Format("2006-01-02 15:04:05.000")
-          previous,_ := time.ParseInLocation("2006-01-02 15:04:05.000", previoustime, loc)
-          previousGET_time = previous.Format("2006-01-02 15:04:05.000")
+          pt,_ := time.Parse("2006-01-02 15:04:05.000", previoustime) //in time format
+          previous := pt.In(loc)
+          previousGET_time = previous.Format("2006-01-02 15:04:05.000") //in string format
   }
 
   return current,previousGET_time
