@@ -74,7 +74,7 @@ for{
       time.Sleep(30000 * time.Millisecond)
     }
     if time.Since(previous_Stime).Minutes()>= 5{
-      fmt.Println("Inside S2")
+      fmt.Println("Running siteerrorLog")
       previous_Stime = DCRAdapter("siteerrorLog",previousGET_Stime)
       previousGET_Stime = previous_Stime.Format("2006-01-02 15:04:05.000")
 
@@ -162,17 +162,16 @@ func LogTimer(previousGET_time string)(time.Time,string){
 
 
 
-  loc, _  := time.LoadLocation("US/Pacific")
-  current_time := time.Now().Format("2006-01-02 15:04:05.000")
+  loc, _  := time.LoadLocation("America/Phoenix")
+  current_time := time.Now().UTC().Format("2006-01-02 15:04:05.000")
   ct,_ := time.Parse("2006-01-02 15:04:05.000",current_time)
   current:= ct.In(loc) // time format
-
 
   //currentGET_time := current.Format("2006-01-02 15:04:05.000")
 
   if previousGET_time == "0001-01-01 00:00:00.000" {
           //this should be the time we make the thread sleep
-          previoustime := time.Now().Add(-5 * time.Minute).Format("2006-01-02 15:04:05.000")
+          previoustime := time.Now().UTC().Add(-5 * time.Minute).Format("2006-01-02 15:04:05.000")
           pt,_ := time.Parse("2006-01-02 15:04:05.000", previoustime) //in time format
           previous := pt.In(loc)
           previousGET_time = previous.Format("2006-01-02 15:04:05.000") //in string format
